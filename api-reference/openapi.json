@@ -1,0 +1,363 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SDR-GPT Research API",
+    "description": "API for researching and answering questions about companies and contacts",
+    "version": "1.0.0"
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://api.orchestra.inc/v1"
+    }
+  ],
+  "paths": {
+    "/research/company": {
+      "post": {
+        "summary": "Research Company",
+        "description": "Answer questions about a company based on available data",
+        "operationId": "researchCompany",
+        "tags": [
+          "Research"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyResearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful research response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/research/person": {
+      "post": {
+        "summary": "Research Person",
+        "description": "Answer questions about a person based on available data",
+        "operationId": "researchPerson",
+        "tags": [
+          "Research"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonResearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful research response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonResearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "API key for authentication"
+      }
+    },
+    "schemas": {
+      "BaseResearchRequest": {
+        "type": "object",
+        "required": [
+          "question",
+          "responseType"
+        ],
+        "properties": {
+          "question": {
+            "type": "string",
+            "description": "The question you want to ask"
+          },
+          "responseType": {
+            "type": "string",
+            "enum": [
+              "BOOL",
+              "TEXT",
+              "NUMBER",
+              "ENUM"
+            ],
+            "description": "The format you expect the response to be in"
+          },
+          "responseOptions": {
+            "type": "string",
+            "description": "Comma-separated list of possible options for ENUM response type"
+          },
+          "context": {
+            "type": "string",
+            "description": "Additional context that might help answer the question"
+          }
+        }
+      },
+      "CompanyResearchRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseResearchRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "company": {
+                "type": "object",
+                "description": "Company data used for research",
+                "required": [
+                  "website"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "website": {
+                    "type": "string"
+                  },
+                  "industry": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "numEmployees": {
+                    "type": "integer"
+                  },
+                  "annualRevenue": {
+                    "type": "number"
+                  },
+                  "linkedinUrl": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PersonResearchRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseResearchRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "person": {
+                "type": "object",
+                "description": "Person data used for research",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "firstname": {
+                    "type": "string"
+                  },
+                  "lastname": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "company": {
+                    "type": "string"
+                  },
+                  "industry": {
+                    "type": "string"
+                  },
+                  "linkedinUrl": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "BaseResearchResponse": {
+        "type": "object",
+        "properties": {
+          "answerText": {
+            "type": "string",
+            "description": "Text answer to the question"
+          },
+          "answerNumber": {
+            "type": "number",
+            "description": "Numerical answer when responseType is NUMBER"
+          },
+          "details": {
+            "type": "string",
+            "description": "Additional details about the answer"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Sources used to derive the answer"
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score of the answer (1-10)"
+          }
+        }
+      },
+      "PersonResearchResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseResearchResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "person": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "description": "Full name of the person"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "description": "Last name of the person"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "The persons current email address (preferably work email). Respond with N/A if not found."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The persons current phone number"
+                  },
+                  "linkedinUrl": {
+                    "type": "string",
+                    "description": "The persons linkedin profile"
+                  },
+                  "jobTitle": {
+                    "type": "string",
+                    "description": "The persons current job title"
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "The country in which the person resides"
+                  },
+                  "city": {
+                    "type": "string",
+                    "description": "The city in which the person resides"
+                  },
+                  "jobStartDate": {
+                    "type": "string",
+                    "description": "The persons current job start date"
+                  },
+                  "companyName": {
+                    "type": "string",
+                    "description": "The persons current company name"
+                  },
+                  "companyWebsite": {
+                    "type": "string",
+                    "description": "The persons current company website. Respond with N/A if not found."
+                  },
+                  "companyLinkedinUrl": {
+                    "type": "string",
+                    "description": "The persons current company linkedin profile"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Missing or invalid API key",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Swan API Documentation",
+  "name": "Orchestra API Documentation",
   "logo": {
     "dark": "/logo/logo.png",
     "light": "/logo/logo.png"
