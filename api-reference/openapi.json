@@ -60,7 +60,7 @@
     "/research/person": {
       "post": {
         "summary": "Research Person",
-        "description": "Answer questions about a person based on available data",
+        "description": "Answer questions and enriches person information based on available data",
         "operationId": "researchPerson",
         "tags": [
           "Research"
@@ -131,7 +131,10 @@
             "description": "The format you expect the response to be in"
           },
           "responseOptions": {
-            "type": "string",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "description": "Comma-separated list of possible options for ENUM response type"
           },
           "context": {
@@ -197,10 +200,10 @@
                   "email": {
                     "type": "string"
                   },
-                  "firstname": {
+                  "firstName": {
                     "type": "string"
                   },
-                  "lastname": {
+                  "lastName": {
                     "type": "string"
                   },
                   "phone": {
