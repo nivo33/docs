@@ -4,6 +4,9 @@ info:
   description: API for researching and answering questions about companies and contacts
   version: 1.0.0
 
+security:
+  - ApiKeyAuth: []
+
 servers:
   - url: https://api.example.com/v1
 
