@@ -54,7 +54,7 @@
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Endpoints",
       "pages": [
         "api-reference/endpoint/research-company",
         "api-reference/endpoint/research-person"
