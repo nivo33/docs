@@ -70,7 +70,7 @@ components:
     ApiKeyAuth:
       type: apiKey
       in: header
-      name: X-API-Key
+      name: x-api-key
       description: API key for authentication
   schemas:
     BaseResearchRequest:
@@ -96,50 +96,31 @@ components:
         context:
           type: string
           description: Additional context that might help answer the question
-        shouldSaveResponse:
-          type: boolean
-          description: Whether to save the response to object properties
-        saveAnswerField:
-          type: string
-          description: Property field to save the answer to
-        saveDetailsField:
-          type: string
-          description: Property field to save the details to
 
     CompanyResearchRequest:
       allOf:
         - $ref: '#/components/schemas/BaseResearchRequest'
         - type: object
+          required:
+              - website
           properties:
             company:
               type: object
               description: Company data used for research
               properties:
-                hs_lastmodifieddate:
-                  type: string
-                  format: date-time
-                createdate:
-                  type: string
-                  format: date-time
                 name:
                   type: string
-                domain:
-                  type: string
-                description:
+                website:
                   type: string
                 industry:
                   type: string
                 country:
                   type: string
-                numberofemployees:
+                numEmployees:
                   type: integer
-                annualrevenue:
+                annualRevenue:
                   type: number
-                hubspot_owner_id:
-                  type: string
-                linkedin_company_page:
-                  type: string
-                website:
+                linkedinUrl:
                   type: string
 
     ContactResearchRequest:
@@ -151,8 +132,6 @@ components:
               type: object
               description: Contact data used for research
               properties:
-                # Note: Specific contact properties would be defined here
-                # They are referenced as CONTACT_PROPERTIES in the original spec
                 email:
                   type: string
                 firstname:
@@ -167,9 +146,8 @@ components:
                   type: string
                 industry:
                   type: string
-                linkedin_profile:
+                linkedinUrl:
                   type: string
-                # Additional fields can be added based on CONTACT_PROPERTIES
 
     ResearchResponse:
       type: object
@@ -188,11 +166,7 @@ components:
           description: Sources used to derive the answer
         confidence:
           type: number
-          description: Confidence score of the answer (0-1)
-        success:
-          type: boolean
-          description: Whether the research was completed successfully
-        # Note: Additional output fields from HS_RESEARCH_CONTACT_OUTPUT_FIELDS would be added here
+          description: Confidence score of the answer (1-10)
 
     Error:
       type: object
