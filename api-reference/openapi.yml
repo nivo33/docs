@@ -8,7 +8,7 @@ security:
   - ApiKeyAuth: []
 
 servers:
-  - url: https://api.example.com/v1
+  - url: https://api.orchestra.inc/v1
 
 paths:
   /research/company:
@@ -30,7 +30,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResearchResponse'
+                $ref: '#/components/schemas/BaseResearchResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '400':
@@ -40,9 +40,9 @@ paths:
 
   /research/person:
     post:
-      summary: Research Contact
-      description: Answer questions about a contact based on available data
-      operationId: researchContact
+      summary: Research Person
+      description: Answer questions about a person based on available data
+      operationId: researchPerson
       tags:
         - Research
       requestBody:
@@ -50,14 +50,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ContactResearchRequest'
+              $ref: '#/components/schemas/PersonResearchRequest'
       responses:
         '200':
           description: Successful research response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResearchResponse'
+                $ref: '#/components/schemas/PersonResearchResponse'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '400':
@@ -101,12 +101,12 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseResearchRequest'
         - type: object
-          required:
-              - website
           properties:
             company:
               type: object
               description: Company data used for research
+              required:
+                - website
               properties:
                 name:
                   type: string
@@ -123,14 +123,14 @@ components:
                 linkedinUrl:
                   type: string
 
-    ContactResearchRequest:
+    PersonResearchRequest:
       allOf:
         - $ref: '#/components/schemas/BaseResearchRequest'
         - type: object
           properties:
-            contact:
+            person:
               type: object
-              description: Contact data used for research
+              description: Person data used for research
               properties:
                 email:
                   type: string
@@ -149,7 +149,7 @@ components:
                 linkedinUrl:
                   type: string
 
-    ResearchResponse:
+    BaseResearchResponse:
       type: object
       properties:
         answerText:
@@ -162,11 +162,55 @@ components:
           type: string
           description: Additional details about the answer
         sources:
-          type: string
+          type: array
+          items:
+            type: string
           description: Sources used to derive the answer
         confidence:
           type: number
           description: Confidence score of the answer (1-10)
+
+    PersonResearchResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResearchResponse'
+        - type: object
+          properties:
+            firstName:
+              type: string
+              description: Full name of the person
+            lastName:
+              type: string
+              description: Last name of the person
+            email:
+              type: string
+              description: The persons current email address (preferably work email). Respond with N/A if not found.
+            phone:
+              type: string
+              description: The persons current phone number
+            linkedinUrl:
+              type: string
+              description: The persons linkedin profile
+            jobTitle:
+              type: string
+              description: The persons current job title
+            country:
+              type: string
+              description: The country in which the person resides
+            city:
+              type: string
+              description: The city in which the person resides
+            jobStartDate:
+              type: string
+              description: The persons current job start date
+            companyName:
+              type: string
+              description: The persons current company name
+            companyWebsite:
+              type: string
+              description: The persons current company website. Respond with N/A if not found.
+            companyLinkedinUrl:
+              type: string
+              description: The persons current company linkedin profile
 
     Error:
       type: object
