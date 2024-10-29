@@ -33,7 +33,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 
-  /research/contact:
+  /research/person:
     post:
       summary: Research Contact
       description: Answer questions about a contact based on available data
