@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title: SDR-GPT Company Research API
+  description: API for researching and answering questions about companies
+  version: 1.0.0
+
+servers:
+  - url: https://api.example.com/v1
+
+paths:
+  /research/company:
+    post:
+      summary: Research Company
+      description: Answer questions about a company based on available data
+      operationId: researchCompany
+      tags:
+        - Research
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - question
+                - responseType
+              properties:
+                question:
+                  type: string
+                  description: The question you want to ask about the company
+                responseType:
+                  type: string
+                  enum:
+                    - BOOL
+                    - TEXT
+                    - NUMBER
+                    - ENUM
+                  description: The format you expect the response to be in
+                responseOptions:
+                  type: string
+                  description: Comma-separated list of possible options for ENUM response type
+                context:
+                  type: string
+                  description: Additional context that might help answer the question
+                shouldSaveResponse:
+                  type: boolean
+                  description: Whether to save the response to company properties
+                saveAnswerField:
+                  type: string
+                  description: Company property field to save the answer to
+                saveDetailsField:
+                  type: string
+                  description: Company property field to save the details to
+                company:
+                  type: object
+                  description: Company data used for research
+                  properties:
+                    hs_lastmodifieddate:
+                      type: string
+                      format: date-time
+                    createdate:
+                      type: string
+                      format: date-time
+                    name:
+                      type: string
+                    domain:
+                      type: string
+                    description:
+                      type: string
+                    industry:
+                      type: string
+                    country:
+                      type: string
+                    numberofemployees:
+                      type: integer
+                    annualrevenue:
+                      type: number
+                    hubspot_owner_id:
+                      type: string
+                    linkedin_company_page:
+                      type: string
+                    website:
+                      type: string
+      responses:
+        '200':
+          description: Successful research response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  answerText:
+                    type: string
+                    description: Text answer to the question
+                  answerNumber:
+                    type: number
+                    description: Numerical answer when responseType is NUMBER
+                  details:
+                    type: string
+                    description: Additional details about the answer
+                  sources:
+                    type: string
+                    description: Sources used to derive the answer
+                  confidence:
+                    type: number
+                    description: Confidence score of the answer (0-1)
+                  success:
+                    type: boolean
+                    description: Whether the research was completed successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
