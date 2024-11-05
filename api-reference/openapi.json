@@ -109,6 +109,35 @@
       }
     },
     "schemas": {
+      "CompanyObject": {
+        "type": "object",
+        "properties": {
+          "company": {
+            "type": "object",
+            "description": "Company data used for research. One of website or name + location is required",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "website": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "numEmployees": {
+                "type": "integer"
+              },
+              "annualRevenue": {
+                "type": "number"
+              },
+              "linkedinUrl": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
       "BaseResearchRequest": {
         "type": "object",
         "required": [
@@ -149,39 +178,7 @@
             "$ref": "#/components/schemas/BaseResearchRequest"
           },
           {
-            "type": "object",
-            "properties": {
-              "company": {
-                "type": "object",
-                "description": "Company data used for research",
-                "required": [
-                  "website"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "website": {
-                    "type": "string"
-                  },
-                  "industry": {
-                    "type": "string"
-                  },
-                  "country": {
-                    "type": "string"
-                  },
-                  "numEmployees": {
-                    "type": "integer"
-                  },
-                  "annualRevenue": {
-                    "type": "number"
-                  },
-                  "linkedinUrl": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/schemas/CompanyObject"
           }
         ]
       },
@@ -194,34 +191,35 @@
             "type": "object",
             "properties": {
               "person": {
-                "type": "object",
-                "description": "Person data used for research",
-                "properties": {
-                  "email": {
-                    "type": "string"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CompanyObject"
                   },
-                  "firstName": {
-                    "type": "string"
-                  },
-                  "lastName": {
-                    "type": "string"
-                  },
-                  "phone": {
-                    "type": "string"
-                  },
-                  "title": {
-                    "type": "string"
-                  },
-                  "company": {
-                    "type": "string"
-                  },
-                  "industry": {
-                    "type": "string"
-                  },
-                  "linkedinUrl": {
-                    "type": "string"
+                  {
+                    "type": "object",
+                    "description": "Person data used for research. At least linkedinUrl or firstName + lastName + company.name is required.",
+                    "properties": {
+                      "email": {
+                        "type": "string"
+                      },
+                      "firstName": {
+                        "type": "string"
+                      },
+                      "lastName": {
+                        "type": "string"
+                      },
+                      "phone": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "linkedinUrl": {
+                        "type": "string"
+                      }
+                    }
                   }
-                }
+                ]
               }
             }
           }
