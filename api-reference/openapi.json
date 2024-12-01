@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "SDR-GPT Research API",
+    "title": "Swan API",
     "description": "API for researching and answering questions about companies and contacts",
     "version": "1.0.0"
   },
