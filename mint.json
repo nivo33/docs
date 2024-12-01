@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Orchestra API Documentation",
+  "name": "Swan API Documentation",
   "logo": {
     "dark": "/logo/logo.png",
     "light": "/logo/logo.png"
@@ -38,12 +38,13 @@
       "group": "Endpoints",
       "pages": [
         "api-reference/endpoint/research-company",
-        "api-reference/endpoint/research-person"
+        "api-reference/endpoint/research-person",
+        "api-reference/endpoint/exclude-company"
       ]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/orchestra",
+    "x": "https://x.com/swan-gtm",
     "linkedin": "https://www.linkedin.com/company/orchestra-gtm-ai"
   }
 }

@@ -16,6 +16,65 @@
     }
   ],
   "paths": {
+    "/exclusion/company": {
+      "post": {
+        "operationId": "excludeCompany",
+        "tags": [
+          "Exclusion"
+        ],
+        "summary": "Exclude Company",
+        "description": "Add a company to the exclusion list, either by email or domain, so the company is filtered out from website identifications.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "domainsOrEmails"
+                ],
+                "properties": {
+                  "domainsOrEmails": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Array of domains or email addresses to exclude. For emails, the domain will be extracted.",
+                    "maxItems": 1000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added domains to exclusion list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "addedCount": {
+                      "type": "integer",
+                      "description": "Number of new domains added"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }        }
+      }
+    },
     "/research/company": {
       "post": {
         "summary": "Research Company",
