@@ -35,11 +35,16 @@
       ]
     },
     {
-      "group": "Endpoints",
+      "group": "Website De-anonymization",
+      "pages": [
+        "api-reference/endpoint/exclude-company"
+      ]
+    },
+    {
+      "group": "Research",
       "pages": [
         "api-reference/endpoint/research-company",
-        "api-reference/endpoint/research-person",
-        "api-reference/endpoint/exclude-company"
+        "api-reference/endpoint/research-person"
       ]
     }
   ],
